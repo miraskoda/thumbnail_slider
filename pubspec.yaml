@@ -1,7 +1,7 @@
 name: thumbnail_slider
 description: A Flutter slider widget that displays thumbnails while dragging.
 version: 0.1.0
-homepage: https://github.com/yourusername/thumbnail_slider
+homepage: https://github.com/miraskoda/thumbnail_slider
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
