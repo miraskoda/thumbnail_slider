@@ -16,6 +16,8 @@ A beautiful and customizable Flutter slider widget that displays thumbnails whil
 - 📊 **Buffer Indicator**: Visual feedback for buffered content
 - 🎯 **Smooth Interaction**: Fluid dragging experience with thumbnail preview
 - 🎨 **Theme Support**: Integrates with Flutter's theming system
+- 🔄 **Update Control**: Control when thumbnails update with `updateWhenImagesChanged`
+- 🎛️ **Enable/Disable**: Toggle slider functionality with `enable` property
 
 ## 📦 Installation
 
@@ -76,6 +78,16 @@ SeekBar(
 )
 ```
 
+### Additional Controls
+
+```dart
+SeekBar(
+  // ... other properties ...
+  enable: true,  // Enable/disable the slider
+  updateWhenImagesChanged: true,  // Control thumbnail updates
+)
+```
+
 ## 📋 API Reference
 
 ### SeekBar Properties
@@ -95,6 +107,8 @@ SeekBar(
 | `textStyle` | `TextStyle?` | null | Custom text style for time displays |
 | `leftTextPadding` | `EdgeInsets` | EdgeInsets.only(left: 16) | Padding for elapsed time |
 | `rightTextPadding` | `EdgeInsets` | EdgeInsets.only(right: 16) | Padding for remaining time |
+| `enable` | `bool` | true | Enable/disable the slider |
+| `updateWhenImagesChanged` | `bool` | true | Control thumbnail updates |
 
 ### Callbacks
 
