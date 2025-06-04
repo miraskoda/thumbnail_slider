@@ -19,6 +19,8 @@ class SeekBar extends StatefulWidget {
     this.thumbnailOffset = const Offset(0, -60),
     this.showElapsedTime = true,
     this.showRemainingTime = true,
+    this.updateWhenImagesChanged = true,
+    this.enable = true,
     this.textStyle,
     this.leftTextPadding = const EdgeInsets.only(left: 16),
     this.rightTextPadding = const EdgeInsets.only(right: 16),
@@ -31,6 +33,7 @@ class SeekBar extends StatefulWidget {
   final Duration duration;
   final Duration position;
   final Duration? bufferedPosition;
+  final bool enable;
   final ValueChanged<Duration>? onChanged;
   final ValueChanged<Duration>? onChangeEnd;
   final VoidCallback? onEnd;
@@ -41,6 +44,7 @@ class SeekBar extends StatefulWidget {
   final Offset thumbnailOffset;
   final bool showElapsedTime;
   final bool showRemainingTime;
+  final bool updateWhenImagesChanged;
   final TextStyle? textStyle;
   final EdgeInsets leftTextPadding;
   final EdgeInsets rightTextPadding;
@@ -59,14 +63,24 @@ class SeekBarState extends State<SeekBar> {
     super.didChangeDependencies();
     _sliderThemeData = SliderTheme.of(context).copyWith(
       trackHeight: 2,
+      showValueIndicator: widget.enable ? ShowValueIndicator.always : null,
     );
+  }
+
+  @override
+  void initState() {
+    _loadThumbnails(widget.imageList!);
+    super.initState();
   }
 
   @override
   void didUpdateWidget(covariant SeekBar oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (!widget.updateWhenImagesChanged) return;
     if (oldWidget.imageList != widget.imageList) {
-      if (widget.imageList?.isNotEmpty ?? false) _loadThumbnails(widget.imageList!);
+      if (widget.imageList?.isNotEmpty ?? false) {
+        _loadThumbnails(widget.imageList!);
+      }
     }
   }
 
@@ -82,7 +96,10 @@ class SeekBarState extends State<SeekBar> {
       final http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final Completer<ui.Image> completer = Completer();
-        ui.decodeImageFromList(Uint8List.view(response.bodyBytes.buffer), completer.complete);
+        ui.decodeImageFromList(
+          Uint8List.view(response.bodyBytes.buffer),
+          completer.complete,
+        );
         return completer.future;
       }
     } catch (e) {
@@ -106,8 +123,10 @@ class SeekBarState extends State<SeekBar> {
             child: ExcludeSemantics(
               child: Slider(
                 max: widget.duration.inMilliseconds.toDouble(),
-                value:
-                    min(widget.bufferedPosition!.inMilliseconds.toDouble(), widget.duration.inMilliseconds.toDouble()),
+                value: min(
+                  widget.bufferedPosition!.inMilliseconds.toDouble(),
+                  widget.duration.inMilliseconds.toDouble(),
+                ),
                 onChanged: (value) {
                   setState(() {
                     _dragValue = value;
@@ -115,7 +134,8 @@ class SeekBarState extends State<SeekBar> {
                   widget.onChanged?.call(Duration(milliseconds: value.round()));
                 },
                 onChangeEnd: (value) {
-                  widget.onChangeEnd?.call(Duration(milliseconds: value.round()));
+                  widget.onChangeEnd
+                      ?.call(Duration(milliseconds: value.round()));
                   _dragValue = null;
                 },
               ),
@@ -137,8 +157,10 @@ class SeekBarState extends State<SeekBar> {
           child: Slider(
             label: _thumbnailImages?.isNotEmpty ?? false ? '' : null,
             max: widget.duration.inMilliseconds.toDouble(),
-            value:
-                min(_dragValue ?? widget.position.inMilliseconds.toDouble(), widget.duration.inMilliseconds.toDouble()),
+            value: min(
+              _dragValue ?? widget.position.inMilliseconds.toDouble(),
+              widget.duration.inMilliseconds.toDouble(),
+            ),
             onChanged: (value) {
               setState(() {
                 _dragValue = value;
@@ -159,7 +181,11 @@ class SeekBarState extends State<SeekBar> {
               padding: widget.leftTextPadding,
               child: Text(
                 formatDuration(widget.position),
-                style: widget.textStyle ?? Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white),
+                style: widget.textStyle ??
+                    Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(color: Colors.white),
               ),
             ),
           ),
@@ -170,9 +196,15 @@ class SeekBarState extends State<SeekBar> {
             child: Padding(
               padding: widget.rightTextPadding,
               child: Text(
-                RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$').firstMatch('$_remaining')?.group(1) ??
+                RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
+                        .firstMatch('$_remaining')
+                        ?.group(1) ??
                     formatDuration(_remaining),
-                style: widget.textStyle ?? Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white),
+                style: widget.textStyle ??
+                    Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(color: Colors.white),
               ),
             ),
           ),

@@ -39,12 +39,19 @@ class ThumbnailValueIndicator extends SliderComponentShape {
   }) {
     final canvas = context.canvas;
 
-    final int index = (value * (thumbnailImages.length)).toInt().clamp(0, thumbnailImages.length - 1);
+    final int index = (value * (thumbnailImages.length))
+        .toInt()
+        .clamp(0, thumbnailImages.length - 1);
 
     if (thumbnailImages[index] == null) return;
 
-    final Rect rect = Rect.fromCenter(center: center.translate(offset.dx, offset.dy), width: width, height: height);
-    final RRect rrect = RRect.fromRectAndRadius(rect, Radius.circular(borderRadius));
+    final Rect rect = Rect.fromCenter(
+      center: center.translate(offset.dx, offset.dy),
+      width: width,
+      height: height,
+    );
+    final RRect rrect =
+        RRect.fromRectAndRadius(rect, Radius.circular(borderRadius));
 
     final paint = Paint();
     canvas
@@ -56,8 +63,11 @@ class ThumbnailValueIndicator extends SliderComponentShape {
         Rect.fromLTRB(
           0,
           0,
-          thumbnailImages[index]!.width.toDouble(),
-          thumbnailImages[index]!.height.toDouble(),
+          width,
+          height,
+          // Alternatively you can use the actual width and height of the image
+          // thumbnailImages[index]!.width.toDouble(),
+          // thumbnailImages[index]!.height.toDouble(),
         ),
         rect,
         paint,

@@ -5,7 +5,7 @@
 
 A beautiful and customizable Flutter slider widget that displays thumbnails while dragging. Perfect for video players, audio players, or any media playback interface that needs visual feedback during seeking.
 
-![Thumbnail Slider Demo](https://raw.githubusercontent.com/yourusername/thumbnail_slider/main/assets/demo.gif)
+![Thumbnail Slider Demo](https://raw.githubusercontent.com/miraskoda/thumbnail_slider/main/assets/demo.gif)
 
 ## ✨ Features
 
@@ -162,6 +162,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📫 Contact
 
-Your Name - [@yourtwitter](https://twitter.com/yourtwitter)
+Miroslav Skoda - [@visit_my_website](https://www.miroslavskoda.cz/)
 
-Project Link: [https://github.com/yourusername/thumbnail_slider](https://github.com/yourusername/thumbnail_slider) 
+Project Link: [https://github.com/miraskoda/thumbnail_slider](https://github.com/miraskoda/thumbnail_slider) 
