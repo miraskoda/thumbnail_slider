@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0] - 2025-06-05
+
+### Added
+- Support for displaying hours in time format when duration exceeds 60 minutes
+- Improved example app with video and audio player demonstrations
+- Material 3 design support in example app
+- New `DurationExtension` for time formatting with `formatTime()` method
+
+### Changed
+- Updated time format to show `H:MM:SS` for durations ≥ 1 hour
+- Enhanced example app UI with better styling and layout
+- Extracted time formatting logic to a reusable extension
+
 ## [0.1.0] - 2025-06-04
 
 ### Added

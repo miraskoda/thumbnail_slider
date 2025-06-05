@@ -27,7 +27,7 @@ class DemoPage extends StatefulWidget {
 
 class _DemoPageState extends State<DemoPage> {
   Duration _position = Duration.zero;
-  final Duration _duration = const Duration(minutes: 5);
+  final Duration _duration = const Duration(hours: 1, minutes: 10);
   final List<String> _thumbnails = [
     'https://picsum.photos/200/300?random=1',
     'https://picsum.photos/200/300?random=2',
@@ -83,7 +83,7 @@ class _DemoPageState extends State<DemoPage> {
               ),
               const SizedBox(height: 40),
               Text(
-                'Current Position: ${_formatDuration(_position)}',
+                'Current Position: ${_position.formatTime()}',
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -94,12 +94,5 @@ class _DemoPageState extends State<DemoPage> {
         ),
       ),
     );
-  }
-
-  String _formatDuration(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    final String minutes = twoDigits(duration.inMinutes.remainder(60));
-    final String seconds = twoDigits(duration.inSeconds.remainder(60));
-    return '$minutes:$seconds';
   }
 }

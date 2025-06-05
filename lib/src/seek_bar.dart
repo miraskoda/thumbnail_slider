@@ -5,14 +5,15 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:thumbnail_slider/src/duration_extension.dart';
 import 'package:thumbnail_slider/src/thumbnail_value_indicator.dart';
 
 class SeekBar extends StatefulWidget {
   const SeekBar({
     required this.duration,
     required this.position,
+    required this.imageList,
     this.bufferedPosition,
-    this.imageList,
     this.thumbnailWidth = 60,
     this.thumbnailHeight = 100,
     this.thumbnailBorderRadius = 8,
@@ -37,7 +38,7 @@ class SeekBar extends StatefulWidget {
   final ValueChanged<Duration>? onChanged;
   final ValueChanged<Duration>? onChangeEnd;
   final VoidCallback? onEnd;
-  final List<String>? imageList;
+  final List<String> imageList;
   final double thumbnailWidth;
   final double thumbnailHeight;
   final double thumbnailBorderRadius;
@@ -69,7 +70,7 @@ class SeekBarState extends State<SeekBar> {
 
   @override
   void initState() {
-    _loadThumbnails(widget.imageList!);
+    _loadThumbnails(widget.imageList);
     super.initState();
   }
 
@@ -78,8 +79,8 @@ class SeekBarState extends State<SeekBar> {
     super.didUpdateWidget(oldWidget);
     if (!widget.updateWhenImagesChanged) return;
     if (oldWidget.imageList != widget.imageList) {
-      if (widget.imageList?.isNotEmpty ?? false) {
-        _loadThumbnails(widget.imageList!);
+      if (widget.imageList.isNotEmpty) {
+        _loadThumbnails(widget.imageList);
       }
     }
   }
@@ -180,7 +181,7 @@ class SeekBarState extends State<SeekBar> {
             child: Padding(
               padding: widget.leftTextPadding,
               child: Text(
-                formatDuration(widget.position),
+                widget.position.formatTime(),
                 style: widget.textStyle ??
                     Theme.of(context)
                         .textTheme
@@ -199,7 +200,7 @@ class SeekBarState extends State<SeekBar> {
                 RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
                         .firstMatch('$_remaining')
                         ?.group(1) ??
-                    formatDuration(_remaining),
+                    _remaining.formatTime(),
                 style: widget.textStyle ??
                     Theme.of(context)
                         .textTheme
@@ -213,13 +214,6 @@ class SeekBarState extends State<SeekBar> {
   }
 
   Duration get _remaining => widget.duration - widget.position;
-
-  String formatDuration(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    final String minutes = twoDigits(duration.inMinutes.remainder(60));
-    final String seconds = twoDigits(duration.inSeconds.remainder(60));
-    return '$minutes:$seconds';
-  }
 }
 
 class HiddenThumbComponentShape extends SliderComponentShape {

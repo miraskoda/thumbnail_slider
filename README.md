@@ -13,6 +13,8 @@ A beautiful and customizable Flutter slider widget that displays thumbnails whil
 - 🌐 **Network Image Support**: Load thumbnails from URLs
 - 🎨 **Customizable Appearance**: Adjust thumbnail size, border radius, and position
 - ⏱️ **Time Display**: Show elapsed and remaining time with customizable styling
+  - Smart time format: Shows hours when duration exceeds 60 minutes
+  - Format: `MM:SS` for < 1 hour, `H:MM:SS` for ≥ 1 hour
 - 📊 **Buffer Indicator**: Visual feedback for buffered content
 - 🎯 **Smooth Interaction**: Fluid dragging experience with thumbnail preview
 - 🎨 **Theme Support**: Integrates with Flutter's theming system
@@ -97,7 +99,7 @@ SeekBar(
 | `duration` | `Duration` | Required | Total duration of the media |
 | `position` | `Duration` | Required | Current playback position |
 | `bufferedPosition` | `Duration?` | null | Current buffered position |
-| `imageList` | `List<String>?` | null | List of thumbnail image URLs |
+| `imageList` | `List<String>` | Required | List of thumbnail image URLs |
 | `thumbnailWidth` | `double` | 60 | Width of the thumbnail |
 | `thumbnailHeight` | `double` | 100 | Height of the thumbnail |
 | `thumbnailBorderRadius` | `double` | 8 | Border radius of the thumbnail |
